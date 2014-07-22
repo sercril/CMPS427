@@ -462,7 +462,7 @@ public class AIController : StateMachine
 
         //roll to see if a chest spawns
         
-        float chestroll = UnityEngine.Random.Range(0f, 1f);
+        float chestroll = UnityEngine.Random.Range(0f, 3f);
         if (chestroll <= gameObject.GetComponent<EnemyBaseAtts>().LootDropChance)
         {
 
