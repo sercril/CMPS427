@@ -4,7 +4,9 @@ using System;
 
 public class PlayerEntity : Entity 
 {
-    public float power, defense, attackSpeed, movementSpeed, minDamage, maxDamage;
+    public float power, defense, attackSpeed, movementSpeed, minDamage, maxDamage, healthRegenInterval;
+
+    private float nextRegenTime;
 
     private Vector3 spawnPoint;
 
@@ -53,6 +55,7 @@ public class PlayerEntity : Entity
         nextLevelExperience = 100;
         GLOBAL_COOLDOWN = 0.5f;
         levelCap = false;
+        nextRegenTime = Time.time + healthRegenInterval;
 
     }
 
@@ -125,6 +128,11 @@ public class PlayerEntity : Entity
 
         //Debug.Log(abilities.Count);
 
+        if (currentHP < baseAtt.Health && Time.time > nextRegenTime)
+        {
+            PassiveHealthRegen();
+            nextRegenTime += healthRegenInterval;
+        }
 
         ModifyResource(0.5f);
 	}
@@ -161,5 +169,21 @@ public class PlayerEntity : Entity
     {
         currentHP = baseAtt.Health;
         transform.position = spawnPoint;
+    }
+
+    public void PassiveHealthRegen()
+    {
+        float regenAmount = defense * 0.15f;
+
+        float newHP = currentHP + regenAmount;
+
+        if (newHP > baseAtt.Health)
+        {
+            currentHP = baseAtt.Health;
+        }
+        else
+        {
+            currentHP = newHP;
+        }
     }
 }

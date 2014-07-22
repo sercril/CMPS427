@@ -290,10 +290,17 @@ public class SpellbookUI : UIState
         //Check to see if the current event type is MouseUp and if the mouse position of the current event is inside the target rect. If it is, perform the necessary operation (in this case, replacing the currently slotted ability with the dragged ability) and set the temporary variable to null.
         if (Event.current.type == EventType.MouseUp && overRect.Contains(Event.current.mousePosition) && draggedAbility != null)
         {
-
+            if (Controller.Player.abilityManager.abilities.Contains(draggedAbility))
+            {
+                draggedAbility = null;
+                return;
+            }
 
             if (Controller.Player.abilityManager.abilities[slotIndex] != null)
             {
+               
+                
+                
                 Controller.PlayerController.SpellBook.Add(Controller.Player.abilityManager.abilities[slotIndex]);
                 Controller.Player.abilityManager.RemoveAbility(slotIndex);
             }
@@ -322,6 +329,14 @@ public class SpellbookUI : UIState
         //Check to see if the current event type is MouseUp and if the mouse position of the current event is inside the target rect. If it is, perform the necessary operation (in this case, removing the currently slotted ability and adding it to the spellbook list) and set the temporary variable to null.
         if (Event.current.type == EventType.MouseUp && overRect.Contains(Event.current.mousePosition) && draggedAbility != null)
         {
+
+            if (Controller.PlayerController.SpellBook.Contains(draggedAbility))
+            {
+                draggedAbility = null;
+                return;
+            }
+            
+            
             Controller.Player.abilityManager.RemoveAbility(Controller.Player.abilityIndexDict[draggedAbility.ID]);
 
             Controller.PlayerController.SpellBook.Add(draggedAbility);
